@@ -29,7 +29,7 @@ This application allows users to query a database containing information about t
    DB_PASSWORD=<database_password>
    DB_HOST=<database_host>
    DB_NAME=<database_name>
-   GOOGLE_API_KEY=<your_google_api_key>
+   GOOGLE_API_KEY=<your_google_api_key> "https://makersuite.google.com/"
 
    !!! #replace with your database's and llm key !!!
    ```
