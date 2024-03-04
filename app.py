@@ -25,8 +25,7 @@ db_chain = SQLDatabaseChain.from_llm(llm, db, verbose=True)
 
 # Streamlit UI
 def main():
-    st.title("Stock Manager Communication App to Database ")
-
+    st.title("ConvoQuery")
     # User Input for the Question
     question = st.text_input("Enter your question:")
 
