@@ -1,12 +1,20 @@
+# from langchain.llms import GooglePalm
+# from langchain.utilities import SQLDatabase
+# from langchain_experimental.sql import SQLDatabaseChain
+# from langchain.prompts import FewShotPromptTemplate
+# from langchain.chains.sql_database.prompt import PROMPT_SUFFIX
+# from langchain.prompts.prompt import PromptTemplate
+# import streamlit as st
+# import os
+# from dotenv import load_dotenv
+
 from langchain.llms import GooglePalm
 from langchain.utilities import SQLDatabase
 from langchain_experimental.sql import SQLDatabaseChain
-from langchain.prompts import FewShotPromptTemplate
-from langchain.chains.sql_database.prompt import PROMPT_SUFFIX
-from langchain.prompts.prompt import PromptTemplate
 import streamlit as st
 import os
 from dotenv import load_dotenv
+
 
 # Load environment variables from .env file
 load_dotenv()
