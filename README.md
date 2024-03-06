@@ -1,6 +1,6 @@
 # ConvoQuery - An app Designed for StoreManagers
 
-This application allows users to query a database containing information about their database, including their brands, colors, sizes, prices,stock quantities as well as their Business insigts
+This application allows users to query a database containing information about their database, including their brands, colors, sizes, prices,stock quantities as well as their Business insights in simple natural language
 
 ## Installation
 
