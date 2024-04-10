@@ -1,50 +1,76 @@
-# from langchain.llms import GooglePalm
-# from langchain.utilities import SQLDatabase
-# from langchain_experimental.sql import SQLDatabaseChain
-# from langchain.prompts import FewShotPromptTemplate
-# from langchain.chains.sql_database.prompt import PROMPT_SUFFIX
-# from langchain.prompts.prompt import PromptTemplate
-# import streamlit as st
-# import os
-# from dotenv import load_dotenv
-
-from langchain.llms import GooglePalm
-from langchain.utilities import SQLDatabase
-from langchain_experimental.sql import SQLDatabaseChain
-import streamlit as st
-import os
+# Importing necessary libraries
 from dotenv import load_dotenv
+import streamlit as st
 
-
-# Load environment variables from .env file
+# Loading environment variables from .env file
 load_dotenv()
 
-# Google Palm LLM Setup
-llm = GooglePalm(google_api_key=os.getenv('GOOGLE_API_KEY'), temperature=0.2)
+# Configuring page title and icon
+st.set_page_config(page_title="CQ", page_icon=":speech_balloon:")
 
-# Database Setup
-db_user = os.getenv('DB_USER')
-db_password = os.getenv('DB_PASSWORD')
-db_host = os.getenv('DB_HOST')
-db_name = os.getenv('DB_NAME')
+# App title
+st.title("ConvoQuery")
 
-db = SQLDatabase.from_uri(f"mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}", sample_rows_in_table_info=3)
-db_chain = SQLDatabaseChain.from_llm(llm, db, verbose=True)
+# Importing a function to connect to the database URI
+from langchain_community.utilities import SQLDatabase
 
-# Streamlit UI
-def main():
-    st.title("ConvoQuery")
-    # User Input for the Question
-    question = st.text_input("Enter your question:")
+# Function to initialize the database connection
+def init_db(user: str, password: str, host: str, port: str, database: str) -> SQLDatabase:
+    db_uri = f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
+    return SQLDatabase.from_uri(db_uri, sample_rows_in_table_info=3)
 
-    if st.button("Submit"):
-        if question:
-            st.text("User: " + question)
+# Sidebar for database connection settings
+with st.sidebar:
+    st.subheader("Setting")
+    st.write("Connect to your Database and start chatting / draw insights with it 😊")
+    
+    st.text_input("Host", value="localhost", key="Host")
+    st.text_input("Port", value="3306", key="Port")
+    st.text_input("User", value="root", key="User")
+    st.text_input("Password", type="password", key="Password")
+    st.text_input("Database", value='atliq_tshirts', key="Database")
+    
+    connect_button = st.button("Connect")  # Button to trigger database connection
 
-            # Execute the LangChain interaction
-            response = db_chain.run(question)
+# Attempting to connect to the database if the Connect button is clicked
+if connect_button:
+    # Show a spinner while connecting
+    with st.spinner("Connecting to the database..."):
+        # Initializing the database connection
+        db = init_db(
+            st.session_state['User'],
+            st.session_state['Password'],
+            st.session_state['Host'],
+            st.session_state['Port'],
+            st.session_state['Database']
+        )
+        st.session_state.db = db
+        st.success("Connected to the database successfully")
 
-            st.text("Database: " + response)
+# Importing message classes for chat interface
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 
-if __name__ == "__main__":
-    main()
+# Initializing chat history if not already present
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = [
+        AIMessage(content="Hey I'm Lora, I'm your SQL assistant, Ask me anything related to your DataBase.")
+    ]
+
+# Displaying messages in the chat interface
+for msg in st.session_state.chat_history:
+    if isinstance(msg, AIMessage):
+        with st.chat_message("Lora"):
+            st.markdown(msg.content)
+    elif isinstance(msg, HumanMessage):
+        with st.chat_message("Human"):
+            st.markdown(msg.content)
+
+# Input field for user queries
+user_query = st.chat_input("Type a message...")
+if user_query is not None and user_query.strip() != "":
+    # Appending user query to chat history
+    st.session_state.chat_history.append(HumanMessage(content=user_query))
+    
+    # Displaying user query in the chat interface
+    with st.chat_message("Human"):
+        st.markdown(user_query)
