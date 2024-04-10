@@ -1,9 +1,5 @@
-python-dotenv
-mysql-connector-python
-pymysql
-google-generativeai
-streamlit
-langchain
-langchain-community
-langchain-core
-langchain-experimental
+langchain_community==0.0.32
+langchain_core==0.1.41
+langchain_groq==0.1.1
+python-dotenv==1.0.1
+streamlit==1.33.0
