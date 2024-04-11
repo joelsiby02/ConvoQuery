@@ -6,6 +6,7 @@ from langchain_community.utilities import SQLDatabase
 from langchain_core.output_parsers import StrOutputParser
 from langchain_groq import ChatGroq
 import streamlit as st
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 # Function to initialize the database connection
 def init_database(user: str, password: str, host: str, port: str, database: str) -> SQLDatabase:
@@ -28,8 +29,8 @@ def get_sql_chain(db):
     SQL Query: SELECT ArtistId, COUNT(*) as track_count FROM Track GROUP BY ArtistId ORDER BY track_count DESC LIMIT 3;
     Question: Name 10 artists
     SQL Query: SELECT Name FROM Artist LIMIT 10;
-    
     Your turn:
+    make sure to return proper syntax with no error
     
     Question: {question}
     SQL Query:
@@ -37,7 +38,8 @@ def get_sql_chain(db):
     
     prompt = ChatPromptTemplate.from_template(template)
   
-    llm = ChatGroq(model="mixtral-8x7b-32768", temperature=0.3)
+    llm = ChatGroq(model="mixtral-8x7b-32768", temperature=0)
+    # llm = ChatGoogleGenerativeAI(model="gemini-pro")
   
     def get_schema(_):
         return db.get_table_info()
@@ -72,7 +74,9 @@ def get_response(user_query: str, db: SQLDatabase, chat_history: list):
 
     prompt = ChatPromptTemplate.from_template(template)
   
+    # llm = ChatGoogleGenerativeAI(model="gemini-pro")
     llm = ChatGroq(model="mixtral-8x7b-32768", temperature=0)
+    
   
     chain = (
         RunnablePassthrough.assign(query=sql_chain).assign(
