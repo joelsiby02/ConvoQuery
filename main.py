@@ -39,8 +39,8 @@ def get_sql_chain(db):
     
     prompt = ChatPromptTemplate.from_template(template)
   
-    # llm = ChatGroq(model="mixtral-8x7b-32768", temperature=0)
-    llm = ChatGoogleGenerativeAI(model="gemini-pro")
+    llm = ChatGroq(model="mixtral-8x7b-32768", temperature=0)
+    # llm = ChatGoogleGenerativeAI(model="gemini-pro")
   
     def get_schema(_):
         return db.get_table_info()
@@ -63,16 +63,7 @@ def get_response(user_query: str, db: SQLDatabase, chat_history: list):
     Conversation History: {chat_history}
     SQL Query: <SQL>{query}</SQL>
     User question: {question}
-    SQL Response: {response}
-    
-    I will provide you with an example how i am expecting the output to be:
-    User question: What's the name of my DataBase?
-    SQL Query: SELECT DATABASE();
-    SQL Response: Hey there, the name of your Database is atliq_store, the SQL query used to fetch the response is SELECT DATABASE();
-    
-    I want to mandatorily maintain the response in this format for whatever question user asks!
-    also understand that whenever user asks anything more its about the same same database {database} so keep responding based on that
-    """
+    SQL Response: {response}"""
 
     prompt = ChatPromptTemplate.from_template(template)
   
@@ -81,9 +72,9 @@ def get_response(user_query: str, db: SQLDatabase, chat_history: list):
     
   
     chain = (
-        RunnablePassthrough.assign(query=sql_chain).assign(
+            RunnablePassthrough.assign(query=sql_chain).assign(
             schema=lambda _: db.get_table_info(),
-            response=lambda vars: db.run(vars["query"]),
+            response=lambda vars: db.run(vars["query"])
         )
         | prompt
         | llm
@@ -156,3 +147,4 @@ if user_query is not None and user_query.strip() != "":
         st.markdown(response)
         
     st.session_state.chat_history.append(AIMessage(content=response))
+
