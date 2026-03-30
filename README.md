@@ -1,69 +1,164 @@
-# ConvoQuery - An app Designed for StoreManagers
+# ConvoQuery — Natural Language to SQL for Store Managers
 
-This application allows users to query a database containing information about their database, including their brands, colors, sizes, prices,stock quantities as well as their Business insights in simple natural language
+ConvoQuery is a Natural Language to SQL (NL2SQL) system that allows store managers to query their business data using plain English — without writing any SQL.
 
-## Installation
+Ask questions like:
 
-1. Clone this repository to your local machine:
+> “What’s the total stock of Nike products under ₹2000?”
 
-   ```
-   git clone (https://github.com/joelsiby02/ConvoQuery.git)
-   ```
-
-2. Navigate to the project directory:
-
-   ```
-   cd ConvoQuery
-   ```
-
-3. Install the required dependencies:
-
-   ```
-   pip install -r requirements.txt
-   ```
-
-4. Set up the environment variables by creating a `.env` file in the project root directory and adding the following variables:
-
-   ```
-   DB_USER=<database_username>
-   DB_PASSWORD=<database_password>
-   DB_HOST=<database_host>
-   DB_NAME=<database_name>
-   GOOGLE_API_KEY=<your_google_api_key> "https://makersuite.google.com/"
-
-   !!! #replace with your database's and llm key !!!
-   ```
-
-2. Run the application:
-
-   ```
-   streamlit run app.py
-   ```
-
-3. Access the application in your web browser at `http://localhost:5000`.
-
-4. Enter your query in the text input field and click the "Submit" button to execute the query.
-
-## Example Queries
-
-- To retrieve the price of a small size Adidas white T-shirt:
-  ```
-  What is the cost of a small size Adidas White T-Shirt?
-  ```
-
-- To list all available T-shirt brands:
-  ```
-  Print all brand names from t_shirts?
-  ```
-
-## Contributing
-
-Contributions are welcome! If you encounter any issues or have suggestions for improvements, please open an issue or submit a pull request.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+and get instant results directly from your database.
 
 ---
 
-This Project is designed as Team6 mini Project
+## 🚀 Problem It Solves
+
+Most store managers don’t know SQL but still need quick access to business insights.
+
+ConvoQuery removes that barrier by translating natural language into executable SQL queries using LLMs.
+
+---
+
+## ⚡ Features
+
+* Convert natural language → SQL queries
+* Query structured retail databases (brands, sizes, colors, pricing, stock)
+* Generate business insights instantly
+* Fast inference using Groq (Mistral)
+* Simple UI built with Streamlit
+
+---
+
+## 🧠 Tech Stack
+
+* **LLMs:** Google PaLM (legacy), Groq (Mistral)
+* **Backend:** Python
+* **Frontend:** Streamlit
+* **Database:** MySQL / PostgreSQL
+
+---
+
+## 🔄 How It Works
+
+1. User enters a query in plain English
+2. LLM converts it into SQL
+3. SQL is executed on the database
+4. Results are displayed instantly
+
+---
+
+## 📦 Installation
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/joelsiby02/ConvoQuery.git
+cd ConvoQuery
+```
+
+### 2. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Setup environment variables
+
+Create a `.env` file in the root directory:
+
+```env
+DB_USER=your_username
+DB_PASSWORD=your_password
+DB_HOST=your_host
+DB_NAME=your_database
+
+GOOGLE_API_KEY=your_google_api_key
+GROQ_API_KEY=your_groq_api_key
+```
+
+---
+
+## ▶️ Run the Application
+
+```bash
+streamlit run app.py
+```
+
+Open in browser:
+
+```
+http://localhost:8501
+```
+
+---
+
+## 💬 Example Queries
+
+```
+What is the price of a medium Puma black hoodie?
+```
+
+```
+Show all available brands in the inventory
+```
+
+```
+How many items are low in stock?
+```
+
+```
+List products under ₹1000 with high demand
+```
+
+---
+
+## 📁 Project Structure
+
+```
+ConvoQuery/
+│── app.py
+│── requirements.txt
+│── .env
+│── modules/
+│   ├── llm_handler.py
+│   ├── sql_generator.py
+│   └── db_connector.py
+```
+
+---
+
+## ⚠️ Limitations
+
+* Accuracy depends on database schema clarity
+* Complex queries may require prompt tuning
+* LLM-generated SQL may occasionally be invalid
+
+---
+
+## 🔮 Future Improvements
+
+* Schema-aware prompting
+* Query validation and correction
+* Analytics dashboard
+* Role-based access control
+
+---
+
+## 🤝 Contributing
+
+Pull requests are welcome. Focus areas:
+
+* Performance
+* Accuracy
+* UI/UX improvements
+
+---
+
+## 📄 License
+
+MIT License — see `LICENSE` file.
+
+---
+
+## 📝 Note
+
+Originally built as a mini project, but designed with scalability in mind for real-world analytics use cases.
